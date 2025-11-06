@@ -16,7 +16,7 @@ public:
         if (u >= 0 && u < numVertices && v >= 0 && v < numVertices) {
             adjMatrix[u][v] = 1;
         } else {
-            std::out_of_range("Vertice fuera de rango");
+            throw std::out_of_range("Vertice fuera de rango");
         }
     }
 
@@ -33,7 +33,13 @@ public:
     // Implementar!! 
     // Devuelve la cantidad de aristas
     int numEdges() const {
-        return 0;
+        int numEdgecount = 0;
+         for (int i = 0; i < numVertices; ++i) {
+            for (int j = 0; j < numVertices; ++j) {
+                if( adjMatrix[i][j] == 1){ numEdgecount++;}; // checks for total lines in matrix
+            }
+         }
+        return numEdgecount;
     }
 
     // Completa esta función
@@ -42,6 +48,12 @@ public:
         if (u < 0 || u >= numVertices)
             throw std::out_of_range("Vertice fuera de rango");
         else {
+            int inDegreeCount = 0;
+                for (int j = 0; j < numVertices; ++j) {  // checks for lines of u and add to degree
+                    if( adjMatrix[j][u] == 1){ inDegreeCount++;};
+                }
+                return inDegreeCount;
+         
         }
     }
 
@@ -50,6 +62,19 @@ public:
     // En caso de que haya varios nodos que tengan el mayor inDegree,
     // devuelve true si u es uno de ellos
     bool isInfluencer(int u) const  {
+        // highestdegree = highest value from list found in degrees
+        // compare cin value node to highest possible
+        //return tru if its the highes tvalue
+        int highestdegree= 0;
+        int currentdegree= 0;
+         for (int i = 0; i < numVertices; ++i) {
+            currentdegree = inDegree(i);
+            if (currentdegree > highestdegree) { highestdegree = currentdegree;}
+         }
+        if (inDegree(u) >= highestdegree){return true;}
+        return false;
+    
+        
     }
 };
 
